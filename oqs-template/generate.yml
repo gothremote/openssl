@@ -40,6 +40,7 @@ kems:
   -
     family: 'BIKE'
     name_group: 'bike1l1cpa'
+    bit_security: 128
     extra_nids:
       old:
         - implementation_version: NIST Round 2 submission
@@ -51,6 +52,7 @@ kems:
   -
     family: 'BIKE'
     name_group: 'bike1l3cpa'
+    bit_security: 192
     extra_nids:
       old:
         - implementation_version: NIST Round 2 submission
@@ -201,6 +203,7 @@ kems:
   -
     family: 'BIKE'
     name_group: 'bike1l1fo'
+    bit_security: 128
     extra_nids:
       old:
         - implementation_version: NIST Round 2 submission
@@ -215,6 +218,7 @@ kems:
   -
     family: 'BIKE'
     name_group: 'bike1l3fo'
+    bit_security: 192
     extra_nids:
       old:
         - implementation_version: NIST Round 2 submission
