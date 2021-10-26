@@ -302,9 +302,9 @@ static const uint16_t eccurves_default[] = {
     0x2F3E, /* OQS kyber90s512 hybrid */
     0x2F2C, /* OQS hqc128 hybrid */
     0x2F2F, /* OQS ntrulpr653 hybrid */
-    0x2F30, /* OQS ntrulpr761 hybrid */
+    0x2F43, /* OQS ntrulpr761 hybrid */
     0x2F32, /* OQS sntrup653 hybrid */
-    0x2F33, /* OQS sntrup761 hybrid */
+    0x2F44, /* OQS sntrup761 hybrid */
 ///// OQS_TEMPLATE_FRAGMENT_ECCURVES_DEFAULT_HYBRID_END
 };
 
@@ -392,7 +392,7 @@ static const uint16_t oqs_all_tls13_server_groups[] = {
     0x022F, /* ntrulpr653 */
     0x2F2F, /* OQS ntrulpr653 hybrid */
     0x0230, /* ntrulpr761 */
-    0x2F30, /* OQS ntrulpr761 hybrid */
+    0x2F43, /* OQS ntrulpr761 hybrid */
     0x0231, /* ntrulpr857 */
     0x2F31, /* OQS ntrulpr857 hybrid */
     0x0241, /* ntrulpr1277 */
@@ -400,7 +400,7 @@ static const uint16_t oqs_all_tls13_server_groups[] = {
     0x0232, /* sntrup653 */
     0x2F32, /* OQS sntrup653 hybrid */
     0x0233, /* sntrup761 */
-    0x2F33, /* OQS sntrup761 hybrid */
+    0x2F44, /* OQS sntrup761 hybrid */
     0x0234, /* sntrup857 */
     0x2F34, /* OQS sntrup857 hybrid */
     0x0242, /* sntrup1277 */

@@ -313,7 +313,11 @@ kems:
     family: 'NTRU-Prime'
     name_group: 'ntrulpr761'
     nid: '0x0230'
-    nid_hybrid: '0x2F30'
+    nid_hybrid: '0x2F43'
+    extra_nids:
+      old:
+        - implementation_version: Round 3 p384 hybrid
+          nid: '0x2F30'
     oqs_alg: 'OQS_KEM_alg_ntruprime_ntrulpr761'
   -
     family: 'NTRU-Prime'
@@ -337,7 +341,11 @@ kems:
     family: 'NTRU-Prime'
     name_group: 'sntrup761'
     nid: '0x0233'
-    nid_hybrid: '0x2F33'
+    nid_hybrid: '0x2F44'
+    extra_nids:
+      old:
+        - implementation_version: Round 3 p384 hybrid
+          nid: '0x2F33'
     oqs_alg: 'OQS_KEM_alg_ntruprime_sntrup761'
   -
     family: 'NTRU-Prime'

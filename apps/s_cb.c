@@ -552,11 +552,11 @@ static const char* OQS_CURVE_ID_NAME_STR(int id) {
    case 0x2F2D: return "p384_hqc192 hybrid";
    case 0x2F2E: return "p521_hqc256 hybrid";
    case 0x2F2F: return "p256_ntrulpr653 hybrid";
-   case 0x2F30: return "p256_ntrulpr761 hybrid";
+   case 0x2F43: return "p256_ntrulpr761 hybrid";
    case 0x2F31: return "p384_ntrulpr857 hybrid";
    case 0x2F41: return "p521_ntrulpr1277 hybrid";
    case 0x2F32: return "p256_sntrup653 hybrid";
-   case 0x2F33: return "p256_sntrup761 hybrid";
+   case 0x2F44: return "p256_sntrup761 hybrid";
    case 0x2F34: return "p384_sntrup857 hybrid";
    case 0x2F42: return "p521_sntrup1277 hybrid";
   ///// OQS_TEMPLATE_FRAGMENT_OQS_CURVE_ID_NAME_STR_HYBRID_END
