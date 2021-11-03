@@ -743,7 +743,6 @@ static void oqs_pkey_ctx_free(OQS_KEY* key) {
   OPENSSL_free(key);
 }
 
-
 /*
  * Initializes a OQS_KEY, given an OpenSSL NID. This function only initializes
  * the post-quantum key, not the classical one (for hybrid schemes)
@@ -1337,6 +1336,128 @@ int oqs_ameth_pkey_ctrl(EVP_PKEY *pkey, int op, long arg1, void *arg2) {
    return 0;
 }
 
+static int oqs_set_priv_key(EVP_PKEY *pkey, const unsigned char *priv, size_t len) 
+{
+    OQS_KEY *oqs_key = NULL;
+    int id = pkey->ameth->pkey_id;
+    int is_hybrid = is_oqs_hybrid_alg(id);   
+
+    //TODO implement support for hybrid keys
+    if(is_hybrid) {
+      printf("No support for hybrid key");
+      return 0;
+    } 
+
+    if (priv == NULL) {
+      ECerr(EC_F_OQS_SET_PRIV, EC_R_KEY_INIT_FAILED);
+      return 0;
+    }     
+
+    if (!oqs_key_init(&oqs_key, id, KEY_TYPE_PRIVATE)) {
+      ECerr(EC_F_OQS_KEY_INIT, EC_R_KEY_INIT_FAILED);
+      return 0;
+    } 
+    memcpy(oqs_key->privkey, priv, oqs_key->s->length_secret_key);  
+
+    // Copy public key to new structure if present
+    size_t pub_len = oqs_key->s->length_public_key;
+    unsigned char* pub = malloc(pub_len);
+    if(pkey->ameth->get_pub_key != NULL && pkey->ameth->get_pub_key(pkey, pub, &pub_len) == 1) {
+      memcpy(oqs_key->pubkey, pub, pub_len);
+    }
+    
+    EVP_PKEY_assign(pkey, id, oqs_key);
+    return 1;
+}
+
+static int oqs_set_pub_key(EVP_PKEY *pkey, const unsigned char *pub, size_t len)
+{
+    OQS_KEY *oqs_key = NULL;
+    int id = pkey->ameth->pkey_id;
+    int is_hybrid = is_oqs_hybrid_alg(id);  
+
+    //TODO implement support for hybrid keys
+    if(is_hybrid) {
+      printf("No support for hybrid key");
+      return 0;
+    }   
+
+    if(pub == NULL) {
+      ECerr(EC_F_OQS_SET_PUB, EC_R_KEY_INIT_FAILED);
+      return 0;
+    }
+
+    if (!oqs_key_init(&oqs_key, id, KEY_TYPE_PRIVATE)) {
+        ECerr(EC_F_OQS_KEY_INIT, EC_R_KEY_INIT_FAILED);
+        return 0;
+    } 
+
+    // Copy private key to new structure if present
+    size_t priv_len = oqs_key->s->length_secret_key;
+    unsigned char* priv = malloc(priv_len);
+    if(pkey->ameth->get_priv_key != NULL && pkey->ameth->get_priv_key(pkey, priv, &priv_len) == 1) {
+      memcpy(oqs_key->privkey, priv, oqs_key->s->length_secret_key);
+    }
+    memcpy(oqs_key->pubkey, pub, oqs_key->s->length_public_key);  
+    
+    EVP_PKEY_assign(pkey, id, oqs_key);
+    return 1;
+}
+
+static int oqs_get_priv_key(const EVP_PKEY *pkey, unsigned char *priv,
+                            size_t *len)
+{
+    int id = pkey->ameth->pkey_id;
+    int is_hybrid = is_oqs_hybrid_alg(id);
+    if (is_hybrid) {
+      //TODO Implement printing of hybrid keys
+      printf("No support for hybrid key");
+      return 0;
+    }
+    const OQS_KEY *oqs_key = (OQS_KEY*) pkey->pkey.ptr;
+
+    if (priv == NULL) {
+        *len = oqs_key->s->length_secret_key;
+        return 1;
+    }
+
+    if (oqs_key == NULL
+            || oqs_key->privkey == NULL
+            || *len < oqs_key->s->length_secret_key)
+        return 0;
+
+    *len = oqs_key->s->length_secret_key;
+    memcpy(priv, oqs_key->privkey, *len);
+    return 1;
+}
+
+static int oqs_get_pub_key(const EVP_PKEY *pkey, unsigned char *pub,
+                           size_t *len)
+{
+    int id = pkey->ameth->pkey_id;
+    int is_hybrid = is_oqs_hybrid_alg(id);
+    if (is_hybrid) {
+      //TODO Implement printing of hybrid keys
+      printf("No support for hybrid key");
+      return 0;
+    }
+    const OQS_KEY *oqs_key = (OQS_KEY*) pkey->pkey.ptr;
+
+    if (pub == NULL) {
+        *len = oqs_key->s->length_public_key;
+        return 1;
+    }
+
+    if (oqs_key == NULL
+            || oqs_key->pubkey == NULL
+            || *len < oqs_key->s->length_public_key)
+        return 0;
+
+    *len = oqs_key->s->length_public_key;
+    memcpy(pub, oqs_key->pubkey, *len);
+    return 1;
+}
+
 #define DEFINE_OQS_EVP_PKEY_ASN1_METHOD(ALG, NID_ALG, SHORT_NAME, LONG_NAME) \
 const EVP_PKEY_ASN1_METHOD ALG##_asn1_meth = { \
     NID_ALG,                                   \
@@ -1363,7 +1484,11 @@ const EVP_PKEY_ASN1_METHOD ALG##_asn1_meth = { \
     oqs_item_verify,                           \
     oqs_item_sign_##ALG,                       \
     oqs_sig_info_set_##ALG,                    \
-    0, 0, 0, 0, 0,                             \
+    0, 0, 0,                                   \
+    oqs_set_priv_key,                          \
+    oqs_set_pub_key,                           \
+    oqs_get_priv_key,                          \
+    oqs_get_pub_key,                           \
 };
 
 static int pkey_oqs_keygen(EVP_PKEY_CTX *ctx, EVP_PKEY *pkey)
