@@ -89,6 +89,8 @@ int ERR_load_EVP_strings(void);
 # define EVP_F_EVP_PKEY_GET0_SIPHASH                      172
 # define EVP_F_EVP_PKEY_GET_RAW_PRIVATE_KEY               202
 # define EVP_F_EVP_PKEY_GET_RAW_PUBLIC_KEY                203
+# define EVP_F_EVP_PKEY_SET_RAW_PRIVATE_KEY               302
+# define EVP_F_EVP_PKEY_SET_RAW_PUBLIC_KEY                303
 # define EVP_F_EVP_PKEY_KEYGEN                            146
 # define EVP_F_EVP_PKEY_KEYGEN_INIT                       147
 # define EVP_F_EVP_PKEY_METH_ADD0                         194

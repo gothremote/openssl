@@ -190,6 +190,8 @@ int ERR_load_EC_strings(void);
 #  define EC_F_OQS_PRIV_ENCODE                             299
 #  define EC_F_OQS_PUB_DECODE                              300
 #  define EC_F_OQS_PUB_ENCODE                              301
+#  define EC_F_OQS_SET_PRIV                                400
+#  define EC_F_OQS_SET_PUB                                 401
 #  define EC_F_OQS_SIZE                                    302
 #  define EC_F_OSSL_ECDH_COMPUTE_KEY                       247
 #  define EC_F_OSSL_ECDSA_SIGN_SIG                         249
